@@ -12,6 +12,7 @@
 		9634E3C326C5790100E6E099 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9634E3C226C5790100E6E099 /* Assets.xcassets */; };
 		9634E3C626C5790100E6E099 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9634E3C526C5790100E6E099 /* Preview Assets.xcassets */; };
 		9634E3C926C5790100E6E099 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9634E3C726C5790100E6E099 /* Main.storyboard */; };
+		9634E3D326C57A5100E6E099 /* TrackpadReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9634E3D226C57A5100E6E099 /* TrackpadReader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		9634E3C826C5790100E6E099 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9634E3CA26C5790100E6E099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9634E3CB26C5790100E6E099 /* TaikoTrackpad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TaikoTrackpad.entitlements; sourceTree = "<group>"; };
+		9634E3D226C57A5100E6E099 /* TrackpadReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadReader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 			children = (
 				9634E3BE26C5790000E6E099 /* AppDelegate.swift */,
 				9634E3C026C5790000E6E099 /* ContentView.swift */,
+				9634E3D226C57A5100E6E099 /* TrackpadReader.swift */,
 				9634E3C226C5790100E6E099 /* Assets.xcassets */,
 				9634E3C726C5790100E6E099 /* Main.storyboard */,
 				9634E3CA26C5790100E6E099 /* Info.plist */,
@@ -145,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9634E3C126C5790000E6E099 /* ContentView.swift in Sources */,
+				9634E3D326C57A5100E6E099 /* TrackpadReader.swift in Sources */,
 				9634E3BF26C5790000E6E099 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
