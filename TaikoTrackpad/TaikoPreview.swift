@@ -7,43 +7,6 @@
 
 import SwiftUI
 
-enum TaikoShapeParams {
-	static let center = CGPoint(x: 0.5, y: 1.0)
-	static let radius: CGFloat = 0.45
-}
-
-enum TaikoInput {
-	case leftDon
-	case leftKa
-	case rightDon
-	case rightKa
-
-	static func mapped(from touch: Touch) -> Self {
-		let aspectRatio = touch.deviceAspectRatio
-		let transformedRadius = TaikoShapeParams.radius * aspectRatio
-		let transformedPoint: CGPoint = {
-			let xDeltaFromMid = touch.normalizedX - 0.5
-			return .init(x: 0.5 + xDeltaFromMid * aspectRatio,
-						 y: touch.normalizedY)
-		}()
-
-		let isRightSide = transformedPoint.x > TaikoShapeParams.center.x
-		let isInside: Bool = {
-			let xDelta = transformedPoint.x - TaikoShapeParams.center.x
-			let yDelta = transformedPoint.y - TaikoShapeParams.center.y
-			let dist = sqrt(xDelta * xDelta + yDelta * yDelta)
-			return dist < transformedRadius
-		}()
-
-		switch (isInside, isRightSide) {
-		case (true, true): return .rightDon
-		case (false, true): return .rightKa
-		case (true, false): return .leftDon
-		case (false, false): return .leftKa
-		}
-	}
-}
-
 private extension TaikoInput {
 	var displayColor: Color {
 		switch self {
@@ -54,11 +17,13 @@ private extension TaikoInput {
 }
 
 struct TaikoShape: Shape {
+	var params = AppConfig.shared.taikoShapeParams
+
 	func path(in rect: CGRect) -> Path {
 		var path = Path()
-		let center = CGPoint(x: rect.width * TaikoShapeParams.center.x,
-							 y: rect.height * TaikoShapeParams.center.y)
-		let radius = rect.width * TaikoShapeParams.radius
+		let center = CGPoint(x: rect.width * params.center.x,
+							 y: rect.height * params.center.y)
+		let radius = rect.width * params.radius
 		path.move(to: center)
 		path.addArc(center: center,
 					radius: radius,
@@ -94,7 +59,7 @@ struct TaikoPreview: View {
 								- touchPointDiameter / 2.0)
 				}
 			}
-		}.onReceive(TaikoEventPublisher) { update in
+		}.onReceive(TouchpadListener.shared.taikoEventPublisher) { update in
 			eventHistory.append(update)
 		}
     }

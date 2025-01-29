@@ -33,8 +33,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.contentView = NSHostingView(rootView: contentView)
 		window.makeKeyAndOrderFront(nil)
 
-		GlobalEventListener.setUp()
-//		GlobalEventListener.enabled = true
+		TouchpadListener.setUpShared()
 	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {

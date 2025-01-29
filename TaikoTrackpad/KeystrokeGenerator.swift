@@ -25,39 +25,48 @@ private extension DispatchQueue {
 	}
 }
 
-private let EventSource =
-	CGEventSource(stateID: CGEventSourceStateID.hidSystemState)
+struct KeystrokeGenerator {
+	fileprivate struct KeyCodeContext {
+		private static let eventSource =
+			CGEventSource(stateID: CGEventSourceStateID.hidSystemState)
 
-enum KeystrokeGenerator {
-	private struct KeyCodeContext {
 		let keyDownEvent: CGEvent
 		let keyUpEvent: CGEvent
+		// Unsure if it is really better (e.g. less latency) to have separate
+		// dispatch queues for each keyDown and keyUp.
 		let keyDownQueue: DispatchQueue
 		let keyUpQueue: DispatchQueue
 
 		init(keyCode: KeyCode) {
-			self.keyDownEvent = CGEvent(keyboardEventSource: EventSource,
-										virtualKey: keyCode.rawValue,
-										keyDown: true)!
-			self.keyUpEvent = CGEvent(keyboardEventSource: EventSource,
-									  virtualKey: keyCode.rawValue,
-									  keyDown: false)!
-			self.keyDownQueue = DispatchQueue(
-				label: "Key down for keyCode: \(String(describing: keyCode))",
+			keyDownEvent = CGEvent(keyboardEventSource: Self.eventSource,
+								   virtualKey: keyCode.rawValue,
+								   keyDown: true)!
+			keyUpEvent = CGEvent(keyboardEventSource: Self.eventSource,
+								 virtualKey: keyCode.rawValue,
+								 keyDown: false)!
+			keyDownQueue = DispatchQueue(
+				label: "Key down for keyCode: \(keyCode)",
 				qos: .userInteractive)
-			self.keyUpQueue = DispatchQueue(
-				label: "Key up for keyCode: \(String(describing: keyCode))",
+			keyUpQueue = DispatchQueue(
+				label: "Key up for keyCode: \(keyCode)",
 				qos: .userInteractive)
 		}
 	}
 
-	private static let eventTapLocation = CGEventTapLocation.cghidEventTap
-	private static let dContext = KeyCodeContext(keyCode: .d)
-	private static let fContext = KeyCodeContext(keyCode: .f)
-	private static let jContext = KeyCodeContext(keyCode: .j)
-	private static let kContext = KeyCodeContext(keyCode: .k)
+	private let dContext = KeyCodeContext(keyCode: .d)
+	private let fContext = KeyCodeContext(keyCode: .f)
+	private let jContext = KeyCodeContext(keyCode: .j)
+	private let kContext = KeyCodeContext(keyCode: .k)
 
-	private static func context(for input: TaikoInput) -> KeyCodeContext {
+	private init() {}
+}
+
+extension KeystrokeGenerator {
+	static let shared = KeystrokeGenerator()
+}
+
+extension KeystrokeGenerator {
+	private func context(for input: TaikoInput) -> KeyCodeContext {
 		switch input {
 		case .leftKa: return dContext
 		case .leftDon: return fContext
@@ -66,14 +75,19 @@ enum KeystrokeGenerator {
 		}
 	}
 
-	static func pressAndRelease(_ input: TaikoInput) {
-		let context = self.context(for: input)
+	private func pressAndRelease(_ context: KeyCodeContext) {
+		let eventTapLocation = CGEventTapLocation.cghidEventTap
 		context.keyDownQueue.async {
-			context.keyDownEvent.post(tap: self.eventTapLocation)
-			context.keyUpEvent.post(tap: self.eventTapLocation)
+			context.keyDownEvent.post(tap: eventTapLocation)
+			context.keyUpEvent.post(tap: eventTapLocation)
 //			context.keyUpQueue.asyncAfter(deadline: .now() + (2 / 1000)) {
-//				context.keyUpEvent.post(tap: self.eventTapLocation)
+//				context.keyUpEvent.post(tap: eventTapLocation)
 //			}
 		}
 	}
+
+	func pressAndRelease(_ input: TaikoInput) {
+		pressAndRelease(context(for: input))
+	}
 }
+
