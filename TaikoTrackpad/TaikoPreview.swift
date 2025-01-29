@@ -19,25 +19,36 @@ enum TaikoInput {
 	case rightKa
 
 	static func mapped(from touch: Touch) -> Self {
-		let xDiffFromMid = touch.normalizedX - 0.5
 		let aspectRatio = touch.deviceAspectRatio
 		let transformedRadius = TaikoShapeParams.radius * aspectRatio
-		let transformedPoint = CGPoint(x: 0.5 + xDiffFromMid * aspectRatio,
-									   y: touch.normalizedY)
-		let rightSide = transformedPoint.x > TaikoShapeParams.center.x
-		let xDiff = transformedPoint.x - TaikoShapeParams.center.x
-		let yDiff = transformedPoint.y - TaikoShapeParams.center.y
-		let dist = sqrt(xDiff * xDiff + yDiff * yDiff)
-		let inside = dist < transformedRadius
-		switch (inside, rightSide) {
-		case (true, true):
-			return .rightDon
-		case (false, true):
-			return .rightKa
-		case (true, false):
-			return .leftDon
-		case (false, false):
-			return .leftKa
+		let transformedPoint: CGPoint = {
+			let xDeltaFromMid = touch.normalizedX - 0.5
+			return .init(x: 0.5 + xDeltaFromMid * aspectRatio,
+						 y: touch.normalizedY)
+		}()
+
+		let isRightSide = transformedPoint.x > TaikoShapeParams.center.x
+		let isInside: Bool = {
+			let xDelta = transformedPoint.x - TaikoShapeParams.center.x
+			let yDelta = transformedPoint.y - TaikoShapeParams.center.y
+			let dist = sqrt(xDelta * xDelta + yDelta * yDelta)
+			return dist < transformedRadius
+		}()
+
+		switch (isInside, isRightSide) {
+		case (true, true): return .rightDon
+		case (false, true): return .rightKa
+		case (true, false): return .leftDon
+		case (false, false): return .leftKa
+		}
+	}
+}
+
+private extension TaikoInput {
+	var displayColor: Color {
+		switch self {
+		case .leftDon, .rightDon: return .red
+		case .leftKa, .rightKa: return .blue
 		}
 	}
 }
@@ -61,7 +72,7 @@ struct TaikoShape: Shape {
 
 struct TaikoPreview: View {
 	@State private var eventHistory: [TaikoTouchEvent] = []
-	private let touchViewLength: CGFloat = 20
+	private let touchPointDiameter: CGFloat = 20
 
     var body: some View {
 		ZStack {
@@ -71,26 +82,17 @@ struct TaikoPreview: View {
 				ForEach(eventHistory) { event in
 					let input = event.input
 					let touch = event.touch
-					let don = input == .leftDon || input == .rightDon
 					Circle()
-						.foregroundColor(don ? Color.red : Color.blue)
-						.frame(width: touchViewLength, height: touchViewLength)
+						.foregroundColor(input.displayColor)
+						.frame(
+							width: touchPointDiameter,
+							height: touchPointDiameter)
 						.offset(
 							x: proxy.size.width * touch.normalizedX
-								- touchViewLength / 2.0,
+								- touchPointDiameter / 2.0,
 							y: proxy.size.height * touch.normalizedY
-								- touchViewLength / 2.0
-						)
+								- touchPointDiameter / 2.0)
 				}
-//				if let point = tapPoint {
-//
-//				}
-//				if let input = input {
-//					VStack {
-//						Text(String.init(describing: input))
-//						Spacer()
-//					}
-//				}
 			}
 		}.onReceive(TaikoEventPublisher) { update in
 			eventHistory.append(update)

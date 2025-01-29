@@ -74,8 +74,9 @@ private func HandleCGEvent(proxy: CGEventTapProxy,
 			}
 		}
 	}
+
 	print(event)
-	print(type.rawValue)
+	print("Event type value: \(type.rawValue)")
 
 	return nil
 }

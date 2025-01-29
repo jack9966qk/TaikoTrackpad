@@ -11,11 +11,11 @@ struct ContentView: View {
     var body: some View {
 		Text("Press 0 to toggle trackpad control").padding()
 		
-//		TaikoPreview()
-//			.background(Color.gray)
-//			.aspectRatio(1.6, contentMode: .fit)
-//			.padding()
-//			.frame(maxWidth: .infinity, maxHeight: .infinity)
+		TaikoPreview()
+			.background(Color.gray)
+			.aspectRatio(1.6, contentMode: .fit)
+			.padding()
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
