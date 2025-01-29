@@ -42,10 +42,12 @@ enum KeystrokeGenerator {
 			self.keyUpEvent = CGEvent(keyboardEventSource: EventSource,
 									  virtualKey: keyCode.rawValue,
 									  keyDown: false)!
-			self.keyDownQueue = DispatchQueue(label: "Key down for keyCode: \(String(describing: keyCode))",
-											  qos: .userInteractive)
-			self.keyUpQueue = DispatchQueue(label: "Key up for keyCode: \(String(describing: keyCode))",
-											qos: .userInteractive)
+			self.keyDownQueue = DispatchQueue(
+				label: "Key down for keyCode: \(String(describing: keyCode))",
+				qos: .userInteractive)
+			self.keyUpQueue = DispatchQueue(
+				label: "Key up for keyCode: \(String(describing: keyCode))",
+				qos: .userInteractive)
 		}
 	}
 

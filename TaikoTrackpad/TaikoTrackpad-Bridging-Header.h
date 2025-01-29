@@ -11,7 +11,13 @@
 #import <CoreGraphics/CoreGraphics.h>
 
 typedef int CGSConnectionID;
-CGError CGSSetConnectionProperty(CGSConnectionID cid, CGSConnectionID targetCID, CFStringRef key, CFTypeRef value);
+
+CGError CGSSetConnectionProperty(
+    CGSConnectionID cid,
+    CGSConnectionID targetCID,
+    CFStringRef key,
+    CFTypeRef value);
+
 int _CGSDefaultConnection();
 
 #endif /* TaikoTrackpad_Bridging_Header_h */

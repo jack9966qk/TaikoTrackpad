@@ -61,7 +61,7 @@ struct TaikoShape: Shape {
 
 struct TaikoPreview: View {
 	@State private var eventHistory: [TaikoTouchEvent] = []
-	private let touchViewSize: CGFloat = 20
+	private let touchViewLength: CGFloat = 20
 
     var body: some View {
 		ZStack {
@@ -74,10 +74,12 @@ struct TaikoPreview: View {
 					let don = input == .leftDon || input == .rightDon
 					Circle()
 						.foregroundColor(don ? Color.red : Color.blue)
-						.frame(width: self.touchViewSize, height: self.touchViewSize)
+						.frame(width: touchViewLength, height: touchViewLength)
 						.offset(
-							x: proxy.size.width * touch.normalizedX - self.touchViewSize / 2.0,
-							y: proxy.size.height * touch.normalizedY - self.touchViewSize / 2.0
+							x: proxy.size.width * touch.normalizedX
+								- touchViewLength / 2.0,
+							y: proxy.size.height * touch.normalizedY
+								- touchViewLength / 2.0
 						)
 				}
 //				if let point = tapPoint {

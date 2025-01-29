@@ -7,7 +7,9 @@ import AppKit
 
 protocol AppKitTouchesViewDelegate: AnyObject {
 	// Provides `.touching` touches only.
-	func touchesView(_ view: AppKitTouchesView, didUpdateTouchingTouches touches: Set<NSTouch>)
+	func touchesView(
+		_ view: AppKitTouchesView,
+		didUpdateTouchingTouches touches: Set<NSTouch>)
 }
 
 final class AppKitTouchesView: NSView {
@@ -25,7 +27,8 @@ final class AppKitTouchesView: NSView {
 	}
 
 	private func handleTouches(with event: NSEvent) {
-		// Get all `.touching` touches only (includes `.began`, `.moved` & `.stationary`).
+		// Get all `.touching` touches only (includes `.began`, `.moved` &
+		// `.stationary`).
 		let touches = event.touches(matching: .touching, in: self)
 		// Forward them via delegate.
 		delegate?.touchesView(self, didUpdateTouchingTouches: touches)
@@ -59,8 +62,8 @@ struct Touch: Identifiable {
 
 	init(_ nsTouch: NSTouch) {
 		self.normalizedX = nsTouch.normalizedPosition.x
-		// `NSTouch.normalizedPosition.y` is flipped -> 0.0 means bottom. But the
-		// `Touch` structure is meants to be used with the SwiftUI -> flip it.
+		// `NSTouch.normalizedPosition.y` is flipped -> 0.0 means bottom. But
+		// the `Touch` struct is meant to be used with the SwiftUI -> flip it.
 		self.normalizedY = 1.0 - nsTouch.normalizedPosition.y
 		let size = nsTouch.deviceSize
 		self.deviceAspectRatio = size.width / size.height
@@ -72,8 +75,7 @@ struct TouchesView: NSViewRepresentable {
 	// Up to date list of touching touches.
 	@Binding var touches: [Touch]
 
-	func updateNSView(_ nsView: AppKitTouchesView, context: Context) {
-	}
+	func updateNSView(_ nsView: AppKitTouchesView, context: Context) {}
 
 	func makeNSView(context: Context) -> AppKitTouchesView {
 		let view = AppKitTouchesView()
@@ -92,14 +94,17 @@ struct TouchesView: NSViewRepresentable {
 			self.parent = view
 		}
 
-		func touchesView(_ view: AppKitTouchesView, didUpdateTouchingTouches touches: Set<NSTouch>) {
+		func touchesView(
+			_ view: AppKitTouchesView,
+			didUpdateTouchingTouches touches: Set<NSTouch>
+		) {
 			parent.touches = touches.map(Touch.init)
 		}
 	}
 }
 
-struct TrackPadView: View {
-	private let touchViewSize: CGFloat = 20
+struct TrackpadView: View {
+	private let touchViewLength: CGFloat = 20
 
 	@State var touches: [Touch] = []
 
@@ -111,10 +116,12 @@ struct TrackPadView: View {
 				ForEach(self.touches) { touch in
 					Circle()
 						.foregroundColor(Color.green)
-						.frame(width: self.touchViewSize, height: self.touchViewSize)
+						.frame(width: touchViewLength, height: touchViewLength)
 						.offset(
-							x: proxy.size.width * touch.normalizedX - self.touchViewSize / 2.0,
-							y: proxy.size.height * touch.normalizedY - self.touchViewSize / 2.0
+							x: proxy.size.width * touch.normalizedX
+								- touchViewLength / 2.0,
+							y: proxy.size.height * touch.normalizedY
+								- touchViewLength / 2.0
 						)
 				}
 			}

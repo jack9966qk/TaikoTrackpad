@@ -30,9 +30,10 @@ private let AlwaysAllowedEventTypes = Set<UInt32>([10, 11])
 private let IgnoredEventTypes = Set<UInt32>([1, 2, 3, 4, 5, 6, 7])
 
 private func UpdateCursorVisibility() {
-	let propertyString = CFStringCreateWithCString(kCFAllocatorDefault,
-												   "SetsCursorInBackground",
-												   CFStringBuiltInEncodings.macRoman.rawValue)
+	let propertyString = CFStringCreateWithCString(
+		kCFAllocatorDefault,
+		"SetsCursorInBackground",
+		CFStringBuiltInEncodings.macRoman.rawValue)
 	CGSSetConnectionProperty(_CGSDefaultConnection(),
 							 _CGSDefaultConnection(),
 							 propertyString,
@@ -68,7 +69,8 @@ private func HandleCGEvent(proxy: CGEventTapProxy,
 				let input = TaikoInput.mapped(from: touch)
 				KeystrokeGenerator.pressAndRelease(input)
 				TaikoEventPublisher.send(.init(input: input, touch: touch))
-//				NSHapticFeedbackManager.defaultPerformer.perform(.generic, performanceTime: .now)
+//				NSHapticFeedbackManager.defaultPerformer.perform(
+//					.generic, performanceTime: .now)
 			}
 		}
 	}
@@ -82,9 +84,7 @@ private func HandleCGEvent(proxy: CGEventTapProxy,
 enum GlobalEventListener {
 	static var enabled: Bool {
 		get { GlobalEventListenerEnabled }
-		set {
-			GlobalEventListenerEnabled = newValue
-		}
+		set { GlobalEventListenerEnabled = newValue }
 	}
 
 	static func setUp() {
