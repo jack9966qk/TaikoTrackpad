@@ -26,10 +26,12 @@ struct TaikoTouchEvent: Identifiable {
 class TouchpadListener {
 	var enabled = false {
 		didSet {
+			objectDidChange.send()
 			updateCursorVisibility()
 		}
 	}
 
+	let objectDidChange = PassthroughSubject<Void, Never>()
 	let taikoEventPublisher = PassthroughSubject<TaikoTouchEvent, Never>()
 
 	private init() {}

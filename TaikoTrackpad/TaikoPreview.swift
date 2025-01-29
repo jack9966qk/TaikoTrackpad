@@ -17,7 +17,7 @@ private extension TaikoInput {
 }
 
 struct TaikoShape: Shape {
-	var params = AppConfig.shared.taikoShapeParams
+	var params: AppConfig.TaikoShapeParams
 
 	func path(in rect: CGRect) -> Path {
 		var path = Path()
@@ -36,37 +36,49 @@ struct TaikoShape: Shape {
 }
 
 struct TaikoPreview: View {
+	@ObservedObject var appConfig: AppConfig
 	@State private var eventHistory: [TaikoTouchEvent] = []
+	@State private var highlightedEvent: TaikoTouchEvent?
 	private let touchPointDiameter: CGFloat = 20
 
     var body: some View {
 		ZStack {
 			GeometryReader { proxy in
-				TaikoShape().fill()
+				TaikoShape(params: appConfig.taikoShapeParams).fill()
 
 				ForEach(eventHistory) { event in
 					let input = event.input
 					let touch = event.touch
+					let highlighted =
+						highlightedEvent.map { $0.id == event.id } ?? false
+					let diameter = highlighted
+						? touchPointDiameter * 1.5
+						: touchPointDiameter
 					Circle()
 						.foregroundColor(input.displayColor)
-						.frame(
-							width: touchPointDiameter,
-							height: touchPointDiameter)
+						.brightness(highlighted ? 0 : -0.5)
+						.frame(width: diameter, height: diameter)
 						.offset(
 							x: proxy.size.width * touch.normalizedX
-								- touchPointDiameter / 2.0,
+								- diameter / 2.0,
 							y: proxy.size.height * touch.normalizedY
-								- touchPointDiameter / 2.0)
+								- diameter / 2.0)
 				}
 			}
 		}.onReceive(TouchpadListener.shared.taikoEventPublisher) { update in
 			eventHistory.append(update)
+			// Set and unset the highlighted event to play some transient
+			// animation.
+			highlightedEvent = update
+			withAnimation {
+				highlightedEvent = nil
+			}
 		}
     }
 }
 
 struct TaikoShape_Previews: PreviewProvider {
     static var previews: some View {
-        TaikoShape()
+		TaikoShape(params: .init())
     }
 }
