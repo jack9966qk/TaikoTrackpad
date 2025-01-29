@@ -28,6 +28,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.setFrameAutosaveName("Main Window")
 		window.contentView = NSHostingView(rootView: contentView)
 		window.makeKeyAndOrderFront(nil)
+
+		GlobalEventListener.setUp()
+//		GlobalEventListener.enabled = true
 	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {

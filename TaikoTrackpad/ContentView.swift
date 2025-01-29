@@ -9,9 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-		TrackpadReader {
-			Text("Hello!")
-		}
+		Text("Press 0 to toggle trackpad control").padding()
+		
+//		TaikoPreview()
+//			.background(Color.gray)
+//			.aspectRatio(1.6, contentMode: .fit)
+//			.padding()
+//			.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

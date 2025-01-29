@@ -13,6 +13,9 @@
 		9634E3C626C5790100E6E099 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9634E3C526C5790100E6E099 /* Preview Assets.xcassets */; };
 		9634E3C926C5790100E6E099 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9634E3C726C5790100E6E099 /* Main.storyboard */; };
 		9634E3D326C57A5100E6E099 /* TrackpadReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9634E3D226C57A5100E6E099 /* TrackpadReader.swift */; };
+		9634E3D626C6A08F00E6E099 /* GlobalEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9634E3D526C6A08F00E6E099 /* GlobalEventListener.swift */; };
+		9634E3FA26C6AFDB00E6E099 /* TaikoShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9634E3F926C6AFDB00E6E099 /* TaikoShape.swift */; };
+		9634E3FD26C6B94A00E6E099 /* KeystrokeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9634E3FC26C6B94A00E6E099 /* KeystrokeGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +28,10 @@
 		9634E3CA26C5790100E6E099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9634E3CB26C5790100E6E099 /* TaikoTrackpad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TaikoTrackpad.entitlements; sourceTree = "<group>"; };
 		9634E3D226C57A5100E6E099 /* TrackpadReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadReader.swift; sourceTree = "<group>"; };
+		9634E3D526C6A08F00E6E099 /* GlobalEventListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalEventListener.swift; sourceTree = "<group>"; };
+		9634E3F926C6AFDB00E6E099 /* TaikoShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaikoShape.swift; sourceTree = "<group>"; };
+		9634E3FC26C6B94A00E6E099 /* KeystrokeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeystrokeGenerator.swift; sourceTree = "<group>"; };
+		9646415926C78FB70038210A /* TaikoTrackpad-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TaikoTrackpad-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,8 +65,12 @@
 			isa = PBXGroup;
 			children = (
 				9634E3BE26C5790000E6E099 /* AppDelegate.swift */,
+				9634E3D526C6A08F00E6E099 /* GlobalEventListener.swift */,
+				9646415926C78FB70038210A /* TaikoTrackpad-Bridging-Header.h */,
 				9634E3C026C5790000E6E099 /* ContentView.swift */,
 				9634E3D226C57A5100E6E099 /* TrackpadReader.swift */,
+				9634E3FC26C6B94A00E6E099 /* KeystrokeGenerator.swift */,
+				9634E3F926C6AFDB00E6E099 /* TaikoShape.swift */,
 				9634E3C226C5790100E6E099 /* Assets.xcassets */,
 				9634E3C726C5790100E6E099 /* Main.storyboard */,
 				9634E3CA26C5790100E6E099 /* Info.plist */,
@@ -148,6 +159,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9634E3C126C5790000E6E099 /* ContentView.swift in Sources */,
+				9634E3D626C6A08F00E6E099 /* GlobalEventListener.swift in Sources */,
+				9634E3FA26C6AFDB00E6E099 /* TaikoShape.swift in Sources */,
+				9634E3FD26C6B94A00E6E099 /* KeystrokeGenerator.swift in Sources */,
 				9634E3D326C57A5100E6E099 /* TrackpadReader.swift in Sources */,
 				9634E3BF26C5790000E6E099 /* AppDelegate.swift in Sources */,
 			);
@@ -302,6 +316,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = m.j.TaikoTrackpad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TaikoTrackpad/TaikoTrackpad-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -326,6 +341,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = m.j.TaikoTrackpad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TaikoTrackpad/TaikoTrackpad-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
